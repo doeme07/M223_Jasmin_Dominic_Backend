@@ -3,8 +3,11 @@ package com.example.demo.domain.mylistentry;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import com.example.demo.core.exception.NoMyListEntryByIdFoundException;
+import com.example.demo.domain.mylistentry.dto.MyListEntryDTO;
+import com.example.demo.domain.mylistentry.dto.MyListEntryMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
@@ -22,43 +25,50 @@ public class MyListEntryController {
     @Autowired
     MyListEntryService myListEntryService;
 
+    private final MyListEntryMapper myListEntryMapper;
+    public MyListEntryController(MyListEntryMapper myListEntryMapper, MyListEntryService myListEntryService) {
+        this.myListEntryMapper = myListEntryMapper;
+        this.myListEntryService = myListEntryService;
+    }
+
     @RequestMapping(value= "/mylistentries", method=RequestMethod.POST)
-    @PreAuthorize(value = "hasAuthority('CREATE')")
+    @PreAuthorize("hasAuthority('MYLISTENTRY_CREATE')")
     @Operation(summary = "Creates a new myListEntry", description = "Creates a new myListEntry with status code 201 when successful")
-    public ResponseEntity<MyListEntry> createListEntry(@Valid @RequestBody MyListEntry myListEntry1) {
+    public ResponseEntity<MyListEntryDTO> createListEntry(@Valid @RequestBody MyListEntry myListEntry1) {
         log.info("Endpoint of creating new MyListEntry was called");
-        return ResponseEntity.status(HttpStatus.CREATED).body(myListEntryService.createMyListEntry(myListEntry1));
+        return ResponseEntity.status(HttpStatus.CREATED).body(myListEntryMapper.toDTO(myListEntryService.createMyListEntry(myListEntry1)));
     }
 
     @RequestMapping(value= "/mylistentries", method=RequestMethod.GET)
-    @PreAuthorize(value = "hasAuthority('READ')")
+    @PreAuthorize("hasAuthority('MYLISTENTRY_READ')")
     @Operation(summary = "Fetches all MyListEntries", description = "Fetches all MyListEntries with status code 200 when successful")
-    public ResponseEntity<List<MyListEntry>> readMyListEntries() {
+    public ResponseEntity<List<MyListEntryDTO>> readMyListEntries() {
         log.info("Endpoint of getting all MyListEntries was called");
-        return ResponseEntity.status(HttpStatus.OK).body(myListEntryService.getMyListEntries());
+        return ResponseEntity.status(HttpStatus.OK).body(myListEntryMapper.toDTOs(myListEntryService.getMyListEntries()));
     }
 
     @RequestMapping(value= "/mylistentries/{myListEntryId}", method=RequestMethod.GET)
-    @PreAuthorize(value = "hasAuthority('READ')")
+    @PreAuthorize("hasAuthority('MYLISTENTRY_READ')")
     @Operation(summary = "Fetches MyListEntry by Id", description = "Fetches MyListEntry by Id with status code 200 when successful")
-    public ResponseEntity<MyListEntry> readMyListEntryById(@Valid @PathVariable(value = "myListEntryId") Long id) throws NoMyListEntryByIdFoundException {
+    public ResponseEntity<MyListEntryDTO> readMyListEntryById(@Valid @PathVariable(value = "myListEntryId") UUID id) throws NoMyListEntryByIdFoundException {
         log.info("Endpoint of getting MyListEntry by Id was called");
-        return ResponseEntity.status(HttpStatus.OK).body(myListEntryService.getMyListEntryById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(myListEntryMapper.toDTO(myListEntryService.getMyListEntryById(id)));
     }
 
     @RequestMapping(value= "/mylistentries/{myListEntryId}", method=RequestMethod.PUT)
-    @PreAuthorize(value = "hasAuthority('UPDATE')")
+    @PreAuthorize("hasAuthority('MYLISTENTRY_UPDATE')")
     @Operation(summary = "Updates a MyListEntry", description = "Updates a MyListEntry with status code 201 when successful")
-    public ResponseEntity<MyListEntry> updateReturn(@Valid @PathVariable(value = "myListEntryId") Long id, @RequestBody MyListEntry myListEntryDetails) throws NoMyListEntryByIdFoundException {
+    public ResponseEntity<MyListEntryDTO> updateReturn(@Valid @PathVariable(value = "myListEntryId") UUID id, @RequestBody MyListEntry myListEntryDetails) throws NoMyListEntryByIdFoundException {
         log.info("Endpoint of updating a MyListEntry was called");
-        return ResponseEntity.status(HttpStatus.CREATED).body(myListEntryService.updateMyListEntry(id, myListEntryDetails));
+        return ResponseEntity.status(HttpStatus.CREATED).body(myListEntryMapper.toDTO(myListEntryService.updateMyListEntry(id, myListEntryDetails)));
     }
 
     @RequestMapping(value= "/mylistentries/{myListEntryId}", method=RequestMethod.DELETE)
-    @PreAuthorize(value = "hasAuthority('DELETE')")
+    @PreAuthorize("hasAuthority('MYLISTENTRY_DELETE')")
     @Operation(summary = "Deletes a MyListEntry", description = "Deletes a MyListEntry with status code 200 when successful")
-    public void deleteMyListEntry(@Valid @PathVariable(value = "myListEntryId") Long id) {
+    public void deleteMyListEntry(@Valid @PathVariable(value = "myListEntryId") UUID id) throws NoMyListEntryByIdFoundException {
         log.info("Endpoint of deleting a MyListEntry was called");
+        myListEntryService.canEditOrDeleteMyListEntry(myListEntryService.getMyListEntryById(id));
         myListEntryService.deleteMyListEntry(id);
     }
 

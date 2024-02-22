@@ -1,5 +1,8 @@
 package com.example.demo.domain.user;
 
+import com.example.demo.domain.mylistentry.MyListEntryService;
+import com.example.demo.domain.mylistentry.dto.MyListEntryDTO;
+import com.example.demo.domain.mylistentry.dto.MyListEntryMapper;
 import com.example.demo.domain.user.dto.UserDTO;
 import com.example.demo.domain.user.dto.UserMapper;
 import com.example.demo.domain.user.dto.UserRegisterDTO;
@@ -26,18 +29,30 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   private final UserService userService;
+
+  private final MyListEntryService myListEntryService;
   private final UserMapper userMapper;
 
+  private final MyListEntryMapper myListEntryMapper;
+
   @Autowired
-  public UserController(UserService userService, UserMapper userMapper) {
+  public UserController(UserService userService, MyListEntryService myListEntryService, UserMapper userMapper, MyListEntryMapper myListEntryMapper) {
     this.userService = userService;
+    this.myListEntryService = myListEntryService;
     this.userMapper = userMapper;
+    this.myListEntryMapper = myListEntryMapper;
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<UserDTO> retrieveById(@PathVariable UUID id) {
     User user = userService.findById(id);
     return new ResponseEntity<>(userMapper.toDTO(user), HttpStatus.OK);
+  }
+
+  @GetMapping("/{id}/getmylistentries")
+  @PreAuthorize("hasAuthority('MYLISTENTRY_READ')")
+  public ResponseEntity<List<MyListEntryDTO>> retrieveAllMyListEntireOfAUser(@PathVariable UUID id){
+    return ResponseEntity.status(HttpStatus.OK).body(myListEntryMapper.toDTOs(myListEntryService.sortedMyListEntryListByImportance(userService.findById(id).getMyListEntries())));
   }
 
   @GetMapping({"", "/"})

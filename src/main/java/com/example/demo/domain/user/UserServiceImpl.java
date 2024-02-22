@@ -2,6 +2,8 @@ package com.example.demo.domain.user;
 
 import com.example.demo.core.generic.AbstractServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +47,12 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
     Random random = new SecureRandom();
     IntStream specialChars = random.ints(count, 33, 45);
     return specialChars.mapToObj(data -> (char) data);
+  }
+
+  @Override
+  public Boolean isUserAuthenticated(){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    return authentication.isAuthenticated();
   }
 
 }

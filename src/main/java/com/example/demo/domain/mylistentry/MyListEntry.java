@@ -1,24 +1,27 @@
 package com.example.demo.domain.mylistentry;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.demo.core.generic.AbstractEntity;
+import com.example.demo.domain.role.Role;
+import com.example.demo.domain.user.User;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
-@Data
 @Table(name = "my_list_entry")
-public class MyListEntry {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@NoArgsConstructor
+@Getter
+@Setter
+@Accessors(chain = true)
+public class MyListEntry extends AbstractEntity {
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -27,9 +30,21 @@ public class MyListEntry {
     private String text;
 
     @Column(name = "creation_date", nullable = false)
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date creationDate;
 
     @Column(name = "importance", nullable = false)
     private int importance;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public MyListEntry(UUID id, String title, String text, Date creationDate, int importance, User user) {
+        super(id);
+        this.title = title;
+        this.text = text;
+        this.creationDate = creationDate;
+        this.importance = importance;
+        this.user = user;
+    }
 }

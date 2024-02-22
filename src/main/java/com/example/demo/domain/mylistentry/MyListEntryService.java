@@ -1,10 +1,14 @@
 package com.example.demo.domain.mylistentry;
 
 import com.example.demo.core.exception.NoMyListEntryByIdFoundException;
+import jakarta.persistence.SecondaryTable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MyListEntryService {
@@ -20,15 +24,15 @@ public class MyListEntryService {
         return myListEntryRepository.findAll();
     }
 
-    public MyListEntry getMyListEntryById(Long id) throws NoMyListEntryByIdFoundException {
+    public MyListEntry getMyListEntryById(UUID id) throws NoMyListEntryByIdFoundException {
         return myListEntryRepository.findById(id).orElseThrow(() -> new NoMyListEntryByIdFoundException("No MyListEntry by Id found"));
     }
 
-    public void deleteMyListEntry(Long myListEntryId) {
+    public void deleteMyListEntry(UUID myListEntryId) {
         myListEntryRepository.deleteById(myListEntryId);
     }
 
-    public MyListEntry updateMyListEntry(Long myListEntryId, MyListEntry myListEntryDetails) throws NoMyListEntryByIdFoundException {
+    public MyListEntry updateMyListEntry(UUID myListEntryId, MyListEntry myListEntryDetails) throws NoMyListEntryByIdFoundException {
         MyListEntry myListEntry1 = myListEntryRepository.findById(myListEntryId).orElseThrow(() -> new NoMyListEntryByIdFoundException("No MyListEntry by Id found on update"));
         myListEntry1.setId(myListEntryDetails.getId());
         myListEntry1.setTitle(myListEntryDetails.getTitle());
@@ -36,5 +40,28 @@ public class MyListEntryService {
         myListEntry1.setText(myListEntryDetails.getText());
         myListEntry1.setCreationDate(myListEntryDetails.getCreationDate());
         return myListEntryRepository.save(myListEntry1);
+    }
+
+
+
+    public List<MyListEntry> sortedMyListEntryListByImportance(Set<MyListEntry> list){
+        return myListEntryRepository.findAll(Sort.by("importance").descending());
+    }
+
+
+
+    public void canEditOrDeleteMyListEntry(MyListEntry entry) {
+        // Hole den eingeloggten Benutzer
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object currentUserUsername = authentication.getDetails();
+
+        // Überprüfe, ob der eingeloggte Benutzer der Ersteller des Eintrags ist oder ein Administrator
+        System.out.println(currentUserUsername);
+    }
+
+    private boolean isAdmin(Authentication authentication) {
+        // Überprüfe, ob der Benutzer die Rolle "ADMIN" hat
+        return authentication.getAuthorities().stream()
+                .anyMatch(role -> role.getAuthority().equals("ADMIN"));
     }
 }

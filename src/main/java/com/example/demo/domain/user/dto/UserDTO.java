@@ -1,6 +1,7 @@
 package com.example.demo.domain.user.dto;
 
 import com.example.demo.core.generic.AbstractDTO;
+import com.example.demo.domain.mylistentry.MyListEntry;
 import com.example.demo.domain.role.dto.RoleDTO;
 import java.util.Set;
 import java.util.UUID;
@@ -26,6 +27,8 @@ public class UserDTO extends AbstractDTO {
 
   @Valid
   private Set<RoleDTO> roles;
+
+  private Set<MyListEntry> myListEntries;
 
   public UserDTO(UUID id, String firstName, String lastName, String email, Set<RoleDTO> roles) {
     super(id);
