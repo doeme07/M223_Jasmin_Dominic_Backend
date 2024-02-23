@@ -30,7 +30,6 @@ public class MyListEntryService {
     }
 
     public void deleteMyListEntry(UUID myListEntryId) {
-        MyListEntry myListEntry = myListEntryRepository.f
         myListEntryRepository.deleteById(myListEntryId);
     }
 
@@ -52,7 +51,7 @@ public class MyListEntryService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object currentUserUsername = authentication.getPrincipal();
 
-
+        cu
 
         // Überprüfe, ob der eingeloggte Benutzer der Ersteller des Eintrags ist oder ein Administrator
         System.out.println(currentUserUsername);
