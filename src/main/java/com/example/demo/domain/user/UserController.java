@@ -3,9 +3,8 @@ package com.example.demo.domain.user;
 import com.example.demo.domain.mylistentry.MyListEntryService;
 import com.example.demo.domain.mylistentry.dto.MyListEntryDTO;
 import com.example.demo.domain.mylistentry.dto.MyListEntryMapper;
-import com.example.demo.domain.user.dto.UserDTO;
-import com.example.demo.domain.user.dto.UserMapper;
-import com.example.demo.domain.user.dto.UserRegisterDTO;
+import com.example.demo.domain.user.dto.*;
+
 import java.util.List;
 import java.util.UUID;
 import jakarta.validation.Valid;
@@ -36,7 +35,7 @@ public class UserController {
   private final MyListEntryMapper myListEntryMapper;
 
   @Autowired
-  public UserController(UserService userService, MyListEntryService myListEntryService, UserMapper userMapper, MyListEntryMapper myListEntryMapper) {
+  public UserController(UserService userService, MyListEntryService myListEntryService, UserMapper userMapper, UserMinimalMapper userMinimalMapper, MyListEntryMapper myListEntryMapper) {
     this.userService = userService;
     this.myListEntryService = myListEntryService;
     this.userMapper = userMapper;

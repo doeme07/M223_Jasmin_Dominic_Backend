@@ -48,8 +48,7 @@ public class WebSecurityConfig {
             .addFilterAfter(new JWTAuthenticationFilter(new AntPathRequestMatcher("/user/login", "POST"),
                     authenticationManager(), jwtProperties), UsernamePasswordAuthenticationFilter.class)
             .addFilterAfter(new JWTAuthorizationFilter(userService, jwtProperties),
-                    UsernamePasswordAuthenticationFilter.class)
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    UsernamePasswordAuthenticationFilter.class).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .build();

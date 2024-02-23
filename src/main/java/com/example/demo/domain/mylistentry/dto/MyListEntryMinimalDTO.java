@@ -1,26 +1,20 @@
 package com.example.demo.domain.mylistentry.dto;
 
 import com.example.demo.core.generic.AbstractDTO;
-import com.example.demo.domain.mylistentry.MyListEntry;
-import com.example.demo.domain.role.dto.RoleDTO;
-import com.example.demo.domain.user.User;
 import com.example.demo.domain.user.dto.UserMinimalDTO;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
-import java.util.Set;
 import java.util.UUID;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Accessors(chain = true)
-public class MyListEntryDTO extends AbstractDTO{
+public class MyListEntryMinimalDTO extends AbstractDTO {
 
     private String title;
     private String text;
@@ -28,8 +22,7 @@ public class MyListEntryDTO extends AbstractDTO{
     private int importance;
     private UserMinimalDTO user;
 
-    public MyListEntryDTO(UUID id, String title, String text, Date creationDate, int importance, UserMinimalDTO user){
-        super(id);
+    public MyListEntryMinimalDTO(String title, String text, Date creationDate, int importance, UserMinimalDTO user){
         this.title = title;
         this.text = text;
         this.creationDate = creationDate;

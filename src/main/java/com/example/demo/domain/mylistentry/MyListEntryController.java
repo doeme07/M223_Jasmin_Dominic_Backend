@@ -8,6 +8,8 @@ import java.util.UUID;
 import com.example.demo.core.exception.NoMyListEntryByIdFoundException;
 import com.example.demo.domain.mylistentry.dto.MyListEntryDTO;
 import com.example.demo.domain.mylistentry.dto.MyListEntryMapper;
+import com.example.demo.domain.mylistentry.dto.MyListEntryMinimalDTO;
+import com.example.demo.domain.mylistentry.dto.MyListEntryMinimalMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
@@ -26,9 +28,12 @@ public class MyListEntryController {
     MyListEntryService myListEntryService;
 
     private final MyListEntryMapper myListEntryMapper;
-    public MyListEntryController(MyListEntryMapper myListEntryMapper, MyListEntryService myListEntryService) {
+
+    private final MyListEntryMinimalMapper myListEntryMinimalMapper;
+    public MyListEntryController(MyListEntryMapper myListEntryMapper, MyListEntryService myListEntryService, MyListEntryMinimalMapper myListEntryMinimalMapper) {
         this.myListEntryMapper = myListEntryMapper;
         this.myListEntryService = myListEntryService;
+        this.myListEntryMinimalMapper = myListEntryMinimalMapper;
     }
 
     @RequestMapping(value= "/mylistentries", method=RequestMethod.POST)
@@ -58,9 +63,9 @@ public class MyListEntryController {
     @RequestMapping(value= "/mylistentries/{myListEntryId}", method=RequestMethod.PUT)
     @PreAuthorize("hasAuthority('MYLISTENTRY_UPDATE')")
     @Operation(summary = "Updates a MyListEntry", description = "Updates a MyListEntry with status code 201 when successful")
-    public ResponseEntity<MyListEntryDTO> updateReturn(@Valid @PathVariable(value = "myListEntryId") UUID id, @RequestBody MyListEntry myListEntryDetails) throws NoMyListEntryByIdFoundException {
+    public ResponseEntity<MyListEntryDTO> updateReturn(@Valid @PathVariable(value = "myListEntryId") UUID id, @RequestBody MyListEntryMinimalDTO myListEntryMinimalDetails) throws NoMyListEntryByIdFoundException {
         log.info("Endpoint of updating a MyListEntry was called");
-        return ResponseEntity.status(HttpStatus.CREATED).body(myListEntryMapper.toDTO(myListEntryService.updateMyListEntry(id, myListEntryDetails)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(myListEntryMapper.toDTO(myListEntryService.updateMyListEntry(id, myListEntryMinimalDetails)));
     }
 
     @RequestMapping(value= "/mylistentries/{myListEntryId}", method=RequestMethod.DELETE)

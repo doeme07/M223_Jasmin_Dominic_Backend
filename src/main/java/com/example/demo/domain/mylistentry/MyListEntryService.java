@@ -1,6 +1,7 @@
 package com.example.demo.domain.mylistentry;
 
 import com.example.demo.core.exception.NoMyListEntryByIdFoundException;
+import com.example.demo.domain.mylistentry.dto.MyListEntryMinimalDTO;
 import jakarta.persistence.SecondaryTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -29,12 +30,12 @@ public class MyListEntryService {
     }
 
     public void deleteMyListEntry(UUID myListEntryId) {
+        MyListEntry myListEntry = myListEntryRepository.f
         myListEntryRepository.deleteById(myListEntryId);
     }
 
-    public MyListEntry updateMyListEntry(UUID myListEntryId, MyListEntry myListEntryDetails) throws NoMyListEntryByIdFoundException {
+    public MyListEntry updateMyListEntry(UUID myListEntryId, MyListEntryMinimalDTO myListEntryDetails) throws NoMyListEntryByIdFoundException {
         MyListEntry myListEntry1 = myListEntryRepository.findById(myListEntryId).orElseThrow(() -> new NoMyListEntryByIdFoundException("No MyListEntry by Id found on update"));
-        myListEntry1.setId(myListEntryDetails.getId());
         myListEntry1.setTitle(myListEntryDetails.getTitle());
         myListEntry1.setImportance(myListEntryDetails.getImportance());
         myListEntry1.setText(myListEntryDetails.getText());
@@ -42,18 +43,16 @@ public class MyListEntryService {
         return myListEntryRepository.save(myListEntry1);
     }
 
-
-
     public List<MyListEntry> sortedMyListEntryListByImportance(Set<MyListEntry> list){
         return myListEntryRepository.findAll(Sort.by("importance").descending());
     }
 
-
-
     public void canEditOrDeleteMyListEntry(MyListEntry entry) {
         // Hole den eingeloggten Benutzer
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object currentUserUsername = authentication.getDetails();
+        Object currentUserUsername = authentication.getPrincipal();
+
+
 
         // Überprüfe, ob der eingeloggte Benutzer der Ersteller des Eintrags ist oder ein Administrator
         System.out.println(currentUserUsername);
