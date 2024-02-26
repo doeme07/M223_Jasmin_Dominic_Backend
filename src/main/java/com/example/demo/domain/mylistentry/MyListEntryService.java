@@ -2,6 +2,8 @@ package com.example.demo.domain.mylistentry;
 
 import com.example.demo.core.exception.NoMyListEntryByIdFoundException;
 import com.example.demo.domain.mylistentry.dto.MyListEntryMinimalDTO;
+import com.example.demo.domain.user.User;
+import com.example.demo.domain.user.UserDetailsImpl;
 import jakarta.persistence.SecondaryTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -47,12 +49,12 @@ public class MyListEntryService {
     }
 
     public void canEditOrDeleteMyListEntry(MyListEntry entry) {
-        // Hole den eingeloggten Benutzer
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object currentUserUsername = authentication.getPrincipal();
+        UserDetailsImpl currentUser = (UserDetailsImpl) authentication.getPrincipal();
+        User user = currentUser.user();
+        System.out.println(user.getId());
 
-        // Überprüfe, ob der eingeloggte Benutzer der Ersteller des Eintrags ist oder ein Administrator
-        System.out.println(currentUserUsername);
+        if (user.getId() == entry.getUser().getId()) System.out.println("can be deleted!");
     }
 
     private boolean isAdmin(Authentication authentication) {

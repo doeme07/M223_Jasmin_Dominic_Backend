@@ -57,6 +57,7 @@ public class MyListEntryController {
     @Operation(summary = "Fetches MyListEntry by Id", description = "Fetches MyListEntry by Id with status code 200 when successful")
     public ResponseEntity<MyListEntryDTO> readMyListEntryById(@Valid @PathVariable(value = "myListEntryId") UUID id) throws NoMyListEntryByIdFoundException {
         log.info("Endpoint of getting MyListEntry by Id was called");
+        myListEntryService.canEditOrDeleteMyListEntry(myListEntryService.getMyListEntryById(id));
         return ResponseEntity.status(HttpStatus.OK).body(myListEntryMapper.toDTO(myListEntryService.getMyListEntryById(id)));
     }
 
