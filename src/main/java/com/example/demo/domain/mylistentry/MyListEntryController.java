@@ -34,6 +34,7 @@ public class MyListEntryController {
         this.myListEntryService = myListEntryService;
     }
 
+    // Endpoint of creating a new MyListEntry
     @RequestMapping(value= "/mylistentries", method=RequestMethod.POST)
     @PreAuthorize("hasAuthority('MYLISTENTRY_CREATE')")
     @Operation(summary = "Creates a new myListEntry", description = "Creates a new myListEntry with status code 201 when successful")
@@ -42,6 +43,7 @@ public class MyListEntryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(myListEntryMapper.toDTO(myListEntryService.createMyListEntry(myListEntry1)));
     }
 
+    // Endpoint of getting a MyListEntry
     @RequestMapping(value= "/mylistentries", method=RequestMethod.GET)
     @PreAuthorize("hasAuthority('MYLISTENTRY_READ')")
     @Operation(summary = "Fetches all MyListEntries", description = "Fetches all MyListEntries with status code 200 when successful")
@@ -50,6 +52,7 @@ public class MyListEntryController {
         return ResponseEntity.status(HttpStatus.OK).body(myListEntryMapper.toDTOs(myListEntryService.getMyListEntries()));
     }
 
+    // Endpoint of getting all MyListEntries
     @RequestMapping(value= "/mylistentries/{myListEntryId}", method=RequestMethod.GET)
     @PreAuthorize("hasAuthority('MYLISTENTRY_READ')")
     @Operation(summary = "Fetches MyListEntry by Id", description = "Fetches MyListEntry by Id with status code 200 when successful")
@@ -58,6 +61,7 @@ public class MyListEntryController {
         return ResponseEntity.status(HttpStatus.OK).body(myListEntryMapper.toDTO(myListEntryService.getMyListEntryById(id)));
     }
 
+    // Endpoint of updating a MyListEntry
     @RequestMapping(value= "/mylistentries/{myListEntryId}", method=RequestMethod.PUT)
     @PreAuthorize("hasAuthority('MYLISTENTRY_UPDATE') || @userPermissionEvaluator.isOwnPost(myListEntryService.getMyListEntryById(id))")
     @Operation(summary = "Updates a MyListEntry", description = "Updates a MyListEntry with status code 201 when successful")
@@ -66,6 +70,7 @@ public class MyListEntryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(myListEntryMapper.toDTO(myListEntryService.updateMyListEntry(id, myListEntryMinimalDetails)));
     }
 
+    // Endpoint of deleting a MyListEntry
     @RequestMapping(value= "/mylistentries/{myListEntryId}", method=RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('MYLISTENTRY_DELETE') || @userPermissionEvaluator.isOwnPost(myListEntryService.getMyListEntryById(id))")
     @Operation(summary = "Deletes a MyListEntry", description = "Deletes a MyListEntry with status code 200 when successful")
@@ -74,18 +79,21 @@ public class MyListEntryController {
         myListEntryService.deleteMyListEntry(id);
     }
 
+    // Exception handler for NoSuchElementException
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException e){
         log.error("No such element");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No such Element");
     }
 
+    // Exception handler for NoMyListEntryByIdFoundException
     @ExceptionHandler(NoMyListEntryByIdFoundException.class)
     public ResponseEntity<String> handleNoReturnFoundException(NoMyListEntryByIdFoundException e){
         log.error("No MyListEntry by Id found");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
+    // Exception handler for MethodArgumentNotValidException
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
         log.error("Argument not Valid");

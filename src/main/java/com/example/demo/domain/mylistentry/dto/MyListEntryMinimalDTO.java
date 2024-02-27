@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
-import java.util.UUID;
+
 
 @NoArgsConstructor
 @Getter

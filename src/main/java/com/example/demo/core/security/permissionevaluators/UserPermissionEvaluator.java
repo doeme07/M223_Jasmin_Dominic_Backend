@@ -13,17 +13,16 @@ public class UserPermissionEvaluator {
   public UserPermissionEvaluator() {
   }
 
+  // Method to check if a user is above a certain age
   public boolean isUserAboveAge(User principal, int age) {
     return true;
   }
 
+  // Method to check if the authenticated user is the owner of a given post
   public boolean isOwnPost(MyListEntry targettedMyListEntry) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetailsImpl currentUser = (UserDetailsImpl) authentication.getPrincipal();
     User user = currentUser.user();
-    System.out.println(user.getId());
-    System.out.println(targettedMyListEntry.getUser().getId());
-
     return user.getId().toString().equals(targettedMyListEntry.getUser().getId().toString());
   }
 }

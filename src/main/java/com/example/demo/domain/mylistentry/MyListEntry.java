@@ -1,18 +1,15 @@
 package com.example.demo.domain.mylistentry;
 
 import com.example.demo.core.generic.AbstractEntity;
-import com.example.demo.domain.role.Role;
+
 import com.example.demo.domain.user.User;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
