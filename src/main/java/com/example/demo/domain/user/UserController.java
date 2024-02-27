@@ -48,10 +48,10 @@ public class UserController {
     return new ResponseEntity<>(userMapper.toDTO(user), HttpStatus.OK);
   }
 
-  @GetMapping("/{id}/getmylistentries")
-  @PreAuthorize("hasAuthority('MYLISTENTRY_READ')")
+  @GetMapping("/{id}/getallmylistentriessorted")
+  @PreAuthorize("hasAuthority('MYLISTENTRIES_OF_A_SPECIFIC_USER')")
   public ResponseEntity<List<MyListEntryDTO>> retrieveAllMyListEntireOfAUser(@PathVariable UUID id){
-    return ResponseEntity.status(HttpStatus.OK).body(myListEntryMapper.toDTOs(myListEntryService.sortedMyListEntryListByImportance(userService.findById(id).getMyListEntries())));
+    return ResponseEntity.status(HttpStatus.OK).body(myListEntryMapper.toDTOs(myListEntryService.sortedMyListEntryListOfSpecificUserByImportance(id)));
   }
 
   @GetMapping({"", "/"})

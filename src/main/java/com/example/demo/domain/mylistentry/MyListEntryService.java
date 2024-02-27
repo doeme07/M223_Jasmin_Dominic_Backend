@@ -44,22 +44,8 @@ public class MyListEntryService {
         return myListEntryRepository.save(myListEntry1);
     }
 
-    public List<MyListEntry> sortedMyListEntryListByImportance(Set<MyListEntry> list){
-        return myListEntryRepository.findAll(Sort.by("importance").descending());
-    }
-
-    public void canEditOrDeleteMyListEntry(MyListEntry entry) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl currentUser = (UserDetailsImpl) authentication.getPrincipal();
-        User user = currentUser.user();
-        System.out.println(user.getId());
-
-        if (user.getId() == entry.getUser().getId()) System.out.println("can be deleted!");
-    }
-
-    private boolean isAdmin(Authentication authentication) {
-        // Überprüfe, ob der Benutzer die Rolle "ADMIN" hat
-        return authentication.getAuthorities().stream()
-                .anyMatch(role -> role.getAuthority().equals("ADMIN"));
+    public List<MyListEntry> sortedMyListEntryListOfSpecificUserByImportance(UUID userId){
+        Sort sortByImportanceDescending = Sort.by("importance").descending();
+        return myListEntryRepository.findByUserId(userId, sortByImportanceDescending);
     }
 }
