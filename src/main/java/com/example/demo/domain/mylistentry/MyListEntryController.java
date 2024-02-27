@@ -9,7 +9,6 @@ import com.example.demo.core.exception.NoMyListEntryByIdFoundException;
 import com.example.demo.domain.mylistentry.dto.MyListEntryDTO;
 import com.example.demo.domain.mylistentry.dto.MyListEntryMapper;
 import com.example.demo.domain.mylistentry.dto.MyListEntryMinimalDTO;
-import com.example.demo.domain.mylistentry.dto.MyListEntryMinimalMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
@@ -29,11 +28,10 @@ public class MyListEntryController {
 
     private final MyListEntryMapper myListEntryMapper;
 
-    private final MyListEntryMinimalMapper myListEntryMinimalMapper;
-    public MyListEntryController(MyListEntryMapper myListEntryMapper, MyListEntryService myListEntryService, MyListEntryMinimalMapper myListEntryMinimalMapper) {
+
+    public MyListEntryController(MyListEntryMapper myListEntryMapper, MyListEntryService myListEntryService) {
         this.myListEntryMapper = myListEntryMapper;
         this.myListEntryService = myListEntryService;
-        this.myListEntryMinimalMapper = myListEntryMinimalMapper;
     }
 
     @RequestMapping(value= "/mylistentries", method=RequestMethod.POST)
@@ -57,12 +55,11 @@ public class MyListEntryController {
     @Operation(summary = "Fetches MyListEntry by Id", description = "Fetches MyListEntry by Id with status code 200 when successful")
     public ResponseEntity<MyListEntryDTO> readMyListEntryById(@Valid @PathVariable(value = "myListEntryId") UUID id) throws NoMyListEntryByIdFoundException {
         log.info("Endpoint of getting MyListEntry by Id was called");
-        myListEntryService.canEditOrDeleteMyListEntry(myListEntryService.getMyListEntryById(id));
         return ResponseEntity.status(HttpStatus.OK).body(myListEntryMapper.toDTO(myListEntryService.getMyListEntryById(id)));
     }
 
     @RequestMapping(value= "/mylistentries/{myListEntryId}", method=RequestMethod.PUT)
-    @PreAuthorize("hasAuthority('MYLISTENTRY_UPDATE')")
+    @PreAuthorize("hasAuthority('MYLISTENTRY_UPDATE') || @userPermissionEvaluator.isOwnPost(myListEntryService.getMyListEntryById(id))")
     @Operation(summary = "Updates a MyListEntry", description = "Updates a MyListEntry with status code 201 when successful")
     public ResponseEntity<MyListEntryDTO> updateReturn(@Valid @PathVariable(value = "myListEntryId") UUID id, @RequestBody MyListEntryMinimalDTO myListEntryMinimalDetails) throws NoMyListEntryByIdFoundException {
         log.info("Endpoint of updating a MyListEntry was called");
@@ -70,11 +67,10 @@ public class MyListEntryController {
     }
 
     @RequestMapping(value= "/mylistentries/{myListEntryId}", method=RequestMethod.DELETE)
-    @PreAuthorize("hasAuthority('MYLISTENTRY_DELETE')")
+    @PreAuthorize("hasAuthority('MYLISTENTRY_DELETE') || @userPermissionEvaluator.isOwnPost(myListEntryService.getMyListEntryById(id))")
     @Operation(summary = "Deletes a MyListEntry", description = "Deletes a MyListEntry with status code 200 when successful")
     public void deleteMyListEntry(@Valid @PathVariable(value = "myListEntryId") UUID id) throws NoMyListEntryByIdFoundException {
         log.info("Endpoint of deleting a MyListEntry was called");
-        myListEntryService.canEditOrDeleteMyListEntry(myListEntryService.getMyListEntryById(id));
         myListEntryService.deleteMyListEntry(id);
     }
 
