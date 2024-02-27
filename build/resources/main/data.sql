@@ -20,7 +20,9 @@ VALUES ('2ebf301e-6c61-4076-98e3-2a38b31daf86', 'DEFAULT'),
 ('49d95185-a8b2-4925-985f-7be39df08c01', 'MYLISTENTRY_READ'),
 ('c9e2f0c5-3dd5-48a5-902e-21f8983ced95', 'MYLISTENTRY_CREATE'),
 ('c3ae699e-2961-450e-837c-44adaf28cf25', 'MYLISTENTRY_DELETE'),
-('21475bf6-6ea6-4ae9-906c-5e3e9ba92c04', 'MYLISTENTRY_UPDATE')
+('21475bf6-6ea6-4ae9-906c-5e3e9ba92c04', 'MYLISTENTRY_UPDATE'),
+('81c38406-4661-45b4-9026-120970249ca7', 'MYLISTENTRIES_OF_A_SPECIFIC_USER')
+
 ON CONFLICT DO NOTHING;
 
 --assign roles to users
@@ -28,6 +30,7 @@ insert into users_role (users_id, role_id)
 values ('ba804cb9-fa14-42a5-afaf-be488742fc54', 'd29e709c-0ff1-4f4c-a7ef-09f656c390f1'),
        ('0d8fa44c-54fd-4cd0-ace9-2a7da57992de', 'd29e709c-0ff1-4f4c-a7ef-09f656c390f1'),
        ('ba804cb9-fa14-42a5-afaf-be488742fc54', 'ab505c92-7280-49fd-a7de-258e618df074'),
+       ('ba804cb9-fa14-42a5-afaf-be488742fc54', 'c6aee32d-8c35-4481-8b3e-a876a39b0c02'),
        ('ba804cb9-fa14-42a5-afaf-be488742fc54', 'c6aee32d-8c35-4481-8b3e-a876a39b0c02')
  ON CONFLICT DO NOTHING;
 
@@ -39,6 +42,7 @@ VALUES ('d29e709c-0ff1-4f4c-a7ef-09f656c390f1', '2ebf301e-6c61-4076-98e3-2a38b31
 ('ab505c92-7280-49fd-a7de-258e618df074', '49d95185-a8b2-4925-985f-7be39df08c01'),
 ('ab505c92-7280-49fd-a7de-258e618df074', 'c9e2f0c5-3dd5-48a5-902e-21f8983ced95'),
 ('ab505c92-7280-49fd-a7de-258e618df074', 'c3ae699e-2961-450e-837c-44adaf28cf25'),
+('ab505c92-7280-49fd-a7de-258e618df074', '81c38406-4661-45b4-9026-120970249ca7'),
 ('ab505c92-7280-49fd-a7de-258e618df074', '21475bf6-6ea6-4ae9-906c-5e3e9ba92c04'),
 ('c6aee32d-8c35-4481-8b3e-a876a39b0c02', '21c942db-a275-43f8-bdd6-d048c21bf5ab')
  ON CONFLICT DO NOTHING;
