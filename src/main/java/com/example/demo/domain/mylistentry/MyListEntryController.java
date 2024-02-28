@@ -58,8 +58,6 @@ public class MyListEntryController {
         log.info("Endpoint of creating new MyListEntry was called");
         return ResponseEntity.status(HttpStatus.CREATED).body(myListEntryMapper.toDTO(myListEntryServiceImpl.createMyListEntry(myListEntryMinimalMapper.fromDTO(myListEntry1))));
     }
-
-    -
      */
     @RequestMapping(value= "/mylistentries", method=RequestMethod.POST)
     @PreAuthorize("hasAuthority('MYLISTENTRY_CREATE') || hasAuthority('MYLISTENTRY_CREATE_ADMIN')")
@@ -70,11 +68,22 @@ public class MyListEntryController {
     }
 
 
-    // Endpoint of creating multiple new MyListEntries
+    /*
+    ultimately the goal is to achieve this endpoint:
     @RequestMapping(value= "/mylistentrieslist", method=RequestMethod.POST)
     @PreAuthorize("(hasAuthority('MYLISTENTRY_CREATE') " +
             "&& @userPermissionEvaluator.userIsOwnerOfPost(myListEntry1)) " +
             "|| hasAuthority('MYLISTENTRY_CREATE_ADMIN')")
+    @Operation(summary = "Creates multiple new myListEntries", description = "Creates multiple new myListEntries with status code 201 when successful")
+    public ResponseEntity<List<MyListEntryDTO>> createListEntries(@Valid @RequestBody List<MyListEntryMinimalDTO> myListEntry1) {
+        log.info("Endpoint of creating multiple new MyListEntries was called");
+        return ResponseEntity.status(HttpStatus.CREATED).body(myListEntryMapper.toDTOs(myListEntryServiceImpl.createMyListEntries(myListEntryMinimalMapper.fromDTOs(myListEntry1))));
+    }
+     */
+
+    // Endpoint of creating multiple new MyListEntries
+    @RequestMapping(value= "/mylistentrieslist", method=RequestMethod.POST)
+    @PreAuthorize("hasAuthority('MYLISTENTRY_CREATE') || hasAuthority('MYLISTENTRY_CREATE_ADMIN')")
     @Operation(summary = "Creates multiple new myListEntries", description = "Creates multiple new myListEntries with status code 201 when successful")
     public ResponseEntity<List<MyListEntryDTO>> createListEntries(@Valid @RequestBody List<MyListEntryMinimalDTO> myListEntry1) {
         log.info("Endpoint of creating multiple new MyListEntries was called");

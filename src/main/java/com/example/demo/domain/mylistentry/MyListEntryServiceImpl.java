@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -54,8 +56,11 @@ public class MyListEntryServiceImpl extends AbstractServiceImpl<MyListEntry> imp
     }
 
     // Method to update a MyListEntry by its ID
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor =Exception.class)
     @Override
-    public MyListEntry updateMyListEntry(UUID myListEntryId, MyListEntryDTO myListEntryDetails) throws NoMyListEntryByIdFoundException {
+    public MyListEntry updateMyListEntry (UUID myListEntryId, MyListEntryDTO myListEntryDetails) throws
+    NoMyListEntryByIdFoundException {
         log.info("Service of updating a MyListEntry was called");
         MyListEntry myListEntry1 = myListEntryRepository.findById(myListEntryId).orElseThrow(() -> new NoMyListEntryByIdFoundException("No MyListEntry by Id found on update: " + myListEntryId));
         myListEntry1.setTitle(myListEntryDetails.getTitle());
@@ -64,6 +69,7 @@ public class MyListEntryServiceImpl extends AbstractServiceImpl<MyListEntry> imp
         myListEntry1.setCreationDate(myListEntryDetails.getCreationDate());
         return myListEntryRepository.save(myListEntry1);
     }
+
 
     // Method to retrieve a sorted list of MyListEntries of a specific user by importance
     @Override

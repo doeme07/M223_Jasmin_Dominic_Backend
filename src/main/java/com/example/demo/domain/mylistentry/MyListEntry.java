@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Date;
 import java.util.UUID;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Accessors(chain = true)
+@Log4j2
 public class MyListEntry extends AbstractEntity {
 
     @Column(name = "title", nullable = false)
@@ -48,6 +50,7 @@ public class MyListEntry extends AbstractEntity {
 
     @PrePersist
     protected void onCreate() {
+        log.info("Attempting to create new MyListEntry");
         this.creationDate = new Date();
     }
 
