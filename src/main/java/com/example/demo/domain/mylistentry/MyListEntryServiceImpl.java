@@ -57,7 +57,7 @@ public class MyListEntryServiceImpl extends AbstractServiceImpl<MyListEntry> imp
 
     // Method to update a MyListEntry by its ID
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor =Exception.class)
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     @Override
     public MyListEntry updateMyListEntry (UUID myListEntryId, MyListEntryDTO myListEntryDetails) throws
     NoMyListEntryByIdFoundException {
