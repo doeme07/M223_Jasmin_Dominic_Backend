@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,7 @@ public class User extends AbstractEntity {
   private Set<Role> roles = new HashSet<>();
 
   @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+  @JsonBackReference
   private Set<MyListEntry> myListEntries = new HashSet<>();
 
   public User(UUID id, String firstName, String lastName, String email, String password, Set<Role> roles) {

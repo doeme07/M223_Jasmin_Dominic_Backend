@@ -7,4 +7,5 @@ import org.springframework.data.domain.Sort;
 
 public interface MyListEntryRepository extends JpaRepository<MyListEntry, UUID> {
     List<MyListEntry> findByUserId(UUID userId, Sort sort);
+    List<MyListEntry> findByUserId(UUID userId);
 }

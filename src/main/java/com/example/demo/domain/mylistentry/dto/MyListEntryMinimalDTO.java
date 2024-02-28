@@ -13,19 +13,16 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-@Accessors(chain = true)
 public class MyListEntryMinimalDTO extends AbstractDTO {
 
     private String title;
     private String text;
-    private Date creationDate;
     private int importance;
     private UserMinimalDTO user;
 
-    public MyListEntryMinimalDTO(String title, String text, Date creationDate, int importance, UserMinimalDTO user){
+    public MyListEntryMinimalDTO(String title, String text, int importance, UserMinimalDTO user){
         this.title = title;
         this.text = text;
-        this.creationDate = creationDate;
         this.importance = importance;
         this.user = user;
     }

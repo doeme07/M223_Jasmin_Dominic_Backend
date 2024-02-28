@@ -12,7 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@Accessors(chain = true)
 public class UserMinimalDTO extends AbstractDTO {
     public UserMinimalDTO(UUID id) {
         super(id);

@@ -23,8 +23,7 @@ public class MyListEntryDTO extends AbstractDTO{
     private int importance;
     private UserMinimalDTO user;
 
-    public MyListEntryDTO(UUID id, String title, String text, Date creationDate, int importance, UserMinimalDTO user){
-        super(id);
+    public MyListEntryDTO(String title, String text, Date creationDate, int importance, UserMinimalDTO user){
         this.title = title;
         this.text = text;
         this.creationDate = creationDate;

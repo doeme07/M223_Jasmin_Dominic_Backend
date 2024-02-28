@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-02-27T21:15:23+0100",
+    date = "2024-02-28T15:33:55+0100",
     comments = "version: 1.5.2.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.0.jar, environment: Java 19.0.2 (Oracle Corporation)"
 )
 @Component
@@ -32,7 +32,6 @@ public class MyListEntryMinimalMapperImpl implements MyListEntryMinimalMapper {
         myListEntry.setId( dto.getId() );
         myListEntry.setTitle( dto.getTitle() );
         myListEntry.setText( dto.getText() );
-        myListEntry.setCreationDate( dto.getCreationDate() );
         myListEntry.setImportance( dto.getImportance() );
         myListEntry.setUser( userMinimalMapper.fromDTO( dto.getUser() ) );
 
@@ -78,7 +77,6 @@ public class MyListEntryMinimalMapperImpl implements MyListEntryMinimalMapper {
         myListEntryMinimalDTO.setId( BO.getId() );
         myListEntryMinimalDTO.setTitle( BO.getTitle() );
         myListEntryMinimalDTO.setText( BO.getText() );
-        myListEntryMinimalDTO.setCreationDate( BO.getCreationDate() );
         myListEntryMinimalDTO.setImportance( BO.getImportance() );
         myListEntryMinimalDTO.setUser( userMinimalMapper.toDTO( BO.getUser() ) );
 

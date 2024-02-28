@@ -1,7 +1,6 @@
 package com.example.demo.domain.user;
 
-import com.example.demo.domain.mylistentry.MyListEntryService;
-import com.example.demo.domain.mylistentry.dto.MyListEntryDTO;
+import com.example.demo.domain.mylistentry.MyListEntryServiceImpl;
 import com.example.demo.domain.mylistentry.dto.MyListEntryMapper;
 import com.example.demo.domain.user.dto.*;
 
@@ -22,15 +21,15 @@ public class UserController {
 
   private final UserService userService;
 
-  private final MyListEntryService myListEntryService;
+  private final MyListEntryServiceImpl myListEntryServiceImpl;
   private final UserMapper userMapper;
 
   private final MyListEntryMapper myListEntryMapper;
 
   @Autowired
-  public UserController(UserService userService, MyListEntryService myListEntryService, UserMapper userMapper, UserMinimalMapper userMinimalMapper, MyListEntryMapper myListEntryMapper) {
+  public UserController(UserService userService, MyListEntryServiceImpl myListEntryServiceImpl, UserMapper userMapper, UserMinimalMapper userMinimalMapper, MyListEntryMapper myListEntryMapper) {
     this.userService = userService;
-    this.myListEntryService = myListEntryService;
+    this.myListEntryServiceImpl = myListEntryServiceImpl;
     this.userMapper = userMapper;
     this.myListEntryMapper = myListEntryMapper;
   }
@@ -40,13 +39,6 @@ public class UserController {
   public ResponseEntity<UserDTO> retrieveById(@PathVariable UUID id) {
     User user = userService.findById(id);
     return new ResponseEntity<>(userMapper.toDTO(user), HttpStatus.OK);
-  }
-
-  // Retrieve all MyListEntries of a user, sorted by importance
-  @GetMapping("/{id}/getallmylistentriessorted")
-  @PreAuthorize("hasAuthority('MYLISTENTRIES_OF_A_SPECIFIC_USER')")
-  public ResponseEntity<List<MyListEntryDTO>> retrieveAllMyListEntireOfAUser(@PathVariable UUID id){
-    return ResponseEntity.status(HttpStatus.OK).body(myListEntryMapper.toDTOs(myListEntryService.sortedMyListEntryListOfSpecificUserByImportance(id)));
   }
 
   // Retrieve all users
