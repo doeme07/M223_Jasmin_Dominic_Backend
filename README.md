@@ -10,7 +10,7 @@ For the tooling, we use and recommend having the following installed:
 - Gradle installed for building our backend.
 - For test purposes, Postman is strongly recommended.
 - DBeaver for inspecting the database.
-- Git for the version control system.
+- Git as the version control system.
 
 ## Setup Frontend
 
