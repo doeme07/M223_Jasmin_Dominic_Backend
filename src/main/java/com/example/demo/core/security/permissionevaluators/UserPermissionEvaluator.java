@@ -34,6 +34,8 @@ public class UserPermissionEvaluator {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetailsImpl currentUser = (UserDetailsImpl) authentication.getPrincipal();
     User user = currentUser.user();
+    System.out.println(targettedMyListEntry.getUser().getId());
+    System.out.println(user.getId());
     return user.getId().toString().equals(targettedMyListEntry.getUser().getId().toString());
   }
 
