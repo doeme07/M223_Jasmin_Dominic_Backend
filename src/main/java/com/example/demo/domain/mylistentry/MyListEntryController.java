@@ -112,7 +112,7 @@ public class MyListEntryController {
 
     // Endpoint of updating a MyListEntry
     @RequestMapping(value= "/mylistentries/{myListEntryId}", method=RequestMethod.PUT)
-    @PreAuthorize("hasAuthority('MYLISTENTRY_UPDATE') || @userPermissionEvaluator.isOwnPost(myListEntryServiceImpl.getMyListEntryById(#id))")
+    @PreAuthorize("hasAuthority('MYLISTENTRY_UPDATE') || @userPermissionEvaluator.isOwnPost(#id)")
     @Operation(summary = "Updates a MyListEntry", description = "Updates a MyListEntry with status code 201 when successful")
     public ResponseEntity<MyListEntryDTO> updateReturn(@Valid @PathVariable(value = "myListEntryId") UUID id, @RequestBody MyListEntryDTO myListEntryMinimalDetails) throws NoMyListEntryByIdFoundException {
         log.info("Endpoint of updating a MyListEntry was called");
