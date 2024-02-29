@@ -46,6 +46,7 @@ VALUES ('d29e709c-0ff1-4f4c-a7ef-09f656c390f1', '2ebf301e-6c61-4076-98e3-2a38b31
        ('ab505c92-7280-49fd-a7de-258e618df074', '3badcd79-e43e-48e1-876d-f645bc2738f8'),
        ('ab505c92-7280-49fd-a7de-258e618df074', '21475bf6-6ea6-4ae9-906c-5e3e9ba92c04'),
        ('c6aee32d-8c35-4481-8b3e-a876a39b0c02', '21c942db-a275-43f8-bdd6-d048c21bf5ab'),
+       ('c6aee32d-8c35-4481-8b3e-a876a39b0c02', 'c3ae699e-2961-450e-837c-44adaf28cf25'),
        ('c6aee32d-8c35-4481-8b3e-a876a39b0c02', '49d95185-a8b2-4925-985f-7be39df08c01'),
        ('c6aee32d-8c35-4481-8b3e-a876a39b0c02', 'c9e2f0c5-3dd5-48a5-902e-21f8983ced95')
     ON CONFLICT DO NOTHING;
