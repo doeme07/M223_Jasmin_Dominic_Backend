@@ -1,10 +1,8 @@
 package com.example.demo.core.generic;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
+import com.example.demo.domain.user.User;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +29,6 @@ public abstract class AbstractServiceImpl<T extends AbstractEntity> implements A
   @Override
   public T updateById(UUID id, T entity) throws NoSuchElementException {
     if (repository.existsById(id)) {
-      entity.setId(id);
       return repository.save(entity);
     } else {
       throw new NoSuchElementException(String.format("Entity with ID '%s' could not be found", id));

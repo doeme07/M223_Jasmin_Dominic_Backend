@@ -1,6 +1,7 @@
 package com.example.demo.domain.mylistentry;
 
 
+
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 @Log4j2
 public class MyListEntryController {
+
     @Autowired
     MyListEntryServiceImpl myListEntryServiceImpl;
 

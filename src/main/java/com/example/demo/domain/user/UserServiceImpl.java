@@ -1,6 +1,9 @@
 package com.example.demo.domain.user;
 
+import com.example.demo.core.exception.NoMyListEntryByIdFoundException;
 import com.example.demo.core.generic.AbstractServiceImpl;
+import com.example.demo.domain.mylistentry.MyListEntry;
+import com.example.demo.domain.user.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -17,11 +21,14 @@ import java.util.stream.Stream;
 public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
 
   private final PasswordEncoder passwordEncoder;
+  private final UserRepository userRepository;
 
   @Autowired
-  public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
+  public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder,
+                         UserRepository userRepository) {
     super(repository);
     this.passwordEncoder = passwordEncoder;
+    this.userRepository = userRepository;
   }
 
   @Override
@@ -53,6 +60,17 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
   public Boolean isUserAuthenticated(){
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     return authentication.isAuthenticated();
+  }
+
+  @Override
+  public User updateUserById(UUID id, User user) throws UsernameNotFoundException {
+
+    User user1 = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User Not found!"));
+    user1.setLastName(user.getLastName());
+    user1.setFirstName(user.getFirstName());
+    user1.setEmail(user.getEmail());
+
+    return userRepository.save(user1);
   }
 
 }
