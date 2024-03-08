@@ -1,13 +1,18 @@
-name: Production Deployment Workflow
+name:  Deploy to production.
 
 on:
   push:
-    branches: 
-      - main
-
+    branches: [main, dev]
 jobs:
-  say-hello:
+  print-hello-world:
     runs-on: ubuntu-latest
     steps:
-      - name: Greet
+      - name: Print Hello World
         run: echo "Hello World!"
+
+  second-test:
+    needs: print-hello-world
+    runs-on: ubuntu-latest
+    steps:
+      - name: Second Test
+        run: echo "Second test executed after the first job"
